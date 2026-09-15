@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private string currentAnimation;
     private readonly ContactPoint2D[] contacts = new ContactPoint2D[16];
+    private int jumpCount = 0;
 
     private void Awake()
     {
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
             if (contacts[i].normal.y >= minGroundNormalY)
             {
                 isGrounded = true;
+                jumpCount = 0;
                 return;
             }
         }
@@ -97,12 +99,18 @@ public class PlayerController : MonoBehaviour
 
         if (value.isPressed && isGrounded)
         {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                jumpForce
-            );
-
-            isGrounded = false;
+            Jump(rb.linearVelocity.x);
         }
+        else if (value.isPressed && jumpCount < 2)
+        {
+            Jump(rb.linearVelocity.x * 0.5f, true);
+        }
+    }
+
+    private void Jump(float height, bool grounded = false)
+    {
+        rb.linearVelocity = new Vector2(height, jumpForce);
+        isGrounded = grounded;
+        jumpCount++;
     }
 }

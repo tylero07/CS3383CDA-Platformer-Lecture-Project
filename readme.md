@@ -1,4 +1,4 @@
-# Track Changes for class project (test)
+# Track Changes for class project
 `tylers addition`
 `Chris' addition`
 `Joes addition`
